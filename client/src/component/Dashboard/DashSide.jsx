@@ -86,6 +86,16 @@ const DashSide = () => {
                 { name: 'System Users', link: '/Dashboard/system-users', icon: <FaUserShield /> }
             ]
         },
+        auth.role === 'admin' && {
+            link: '/Dashboard/my-attendance',
+            name: 'Intern Attendance',
+            icon: <FaUserShield />,
+        },
+        auth.role === 'admin' && {
+            link: '/Dashboard/my-attendance',
+            name: 'My Attendance',
+            icon: <FaUserShield />,
+        },
         { link: '/Dashboard/activities', name: 'User Activities', icon: <MdHistory /> },
     ].filter(Boolean); // remove false items for non-admin users
 
