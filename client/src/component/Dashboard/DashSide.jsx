@@ -90,7 +90,7 @@ const DashSide = () => {
     ].filter(Boolean); // remove false items for non-admin users
 
     return (
-        <aside className="h-screen w-64 bg-gradient-to-b from-white via-blue-50 to-blue-100 border-r border-blue-200 shadow-lg flex flex-col overflow-y-auto">
+        <aside className="h-screen w-64 bg-white border-r border-blue-200 shadow-lg flex flex-col overflow-y-auto">
             {/* Header */}
             <div className="flex items-center gap-3 px-6 py-5 border-b border-blue-200 shrink-0">
                 <MdDashboard className="h-7 w-7 text-blue-600" />
@@ -172,7 +172,7 @@ const DashSide = () => {
 
             {/* Footer Spacer */}
             <div className="mt-auto p-4 text-center text-xs text-gray-400 shrink-0">
-                © {new Date().getFullYear()} LCM
+                © {new Date().getFullYear()} M&E System
             </div>
         </aside>
     );
