@@ -68,12 +68,7 @@ const DashSide = () => {
     // Menu items configuration
     const menuItems = [
         { link: '/Dashboard', name: 'Overview', icon: <MdDashboard /> },
-        { link: '/Dashboard/files', name: 'Files', icon: <MdFolderOpen /> },
-        (auth.role === 'admin' || auth.role === 'judge' || auth.role === 'lawyer') && {
-            link: '/Dashboard/judgement',
-            name: 'Judgement',
-            icon: <FaBalanceScale />,            
-        },
+
         auth.role === 'admin' && {
             link: '/Dashboard/reports',
             name: 'Reports',

@@ -20,7 +20,6 @@ import ViewPermission from '../pages/Dashboard/Roles/VIewPermission'
 import Profile from '../pages/Dashboard/Profile/Profile'
 import Activities from '../pages/Dashboard/UserActivities/Activities'
 import ViewActivity from '../pages/Dashboard/UserActivities/ViewActivity'
-import Judgement from '../pages/Dashboard/Judgement/Judgement'
 
 function App() {
 
@@ -52,8 +51,6 @@ function App() {
                     <Route path='create-newrole' element={<PrivateRoute roles={['admin']}><CreateNewRole /></PrivateRoute>} />
                     <Route path='activities' element={<PrivateRoute roles={['admin']}><Activities /></PrivateRoute>} />
                     <Route path='view-activity/:id' element={<PrivateRoute roles={['admin']}><ViewActivity /></PrivateRoute>} />
-
-                    <Route path='judgement' element={<PrivateRoute roles={['admin', 'judge', 'lawyer']}><Judgement /> </PrivateRoute>} />
 
 
                 </Route>
