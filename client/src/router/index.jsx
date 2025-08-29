@@ -34,11 +34,11 @@ function App() {
                     <Route path='/unauthorized' element={<Unauthorized />} />
                 </Route>
 
-                <Route path='/Dashboard/' element={<PrivateRoute roles={['admin', 'judge', 'lawyer', 'member']}><Dashboard /></PrivateRoute>}>
-                    <Route path='*' element={<PrivateRoute roles={['admin', 'judge', 'lawyer', 'member']}><DashError /></PrivateRoute>} />
-                    <Route index element={<PrivateRoute roles={['admin', 'judge', 'lawyer', 'member']}><DashHome /></PrivateRoute>} />
-                    <Route path='Notifications' element={<PrivateRoute roles={['admin', 'judge', 'lawyer', 'member']}><Notifications /> </PrivateRoute>} />
-                    <Route path='profile' element={<PrivateRoute roles={['admin', 'judge', 'lawyer', 'member']}><Profile /> </PrivateRoute>} />
+                <Route path='/Dashboard/' element={<PrivateRoute roles={['admin', 'supervisor', 'staff', 'intern']}><Dashboard /></PrivateRoute>}>
+                    <Route path='*' element={<PrivateRoute roles={['admin', 'supervisor', 'staff', 'intern']}><DashError /></PrivateRoute>} />
+                    <Route index element={<PrivateRoute roles={['admin', 'supervisor', 'staff', 'intern']}><DashHome /></PrivateRoute>} />
+                    <Route path='Notifications' element={<PrivateRoute roles={['admin', 'supervisor', 'staff', 'intern']}><Notifications /> </PrivateRoute>} />
+                    <Route path='profile' element={<PrivateRoute roles={['admin', 'supervisor', 'staff', 'intern']}><Profile /> </PrivateRoute>} />
 
 
                     <Route path='manage-roles' element={<PrivateRoute roles={['admin']}><ManageRoles /></PrivateRoute>} />

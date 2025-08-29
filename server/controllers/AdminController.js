@@ -60,49 +60,56 @@ const AdminController = {
                 to: email,
                 subject: "Your Account is Now Active",
                 html: `
-        <div style="font-family: Arial, sans-serif; background-color: #f7f6fb; padding: 20px;">
-            <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
-                <div style="background: linear-gradient(135deg, #6d28d9, #8b5cf6); padding: 20px; text-align: center; color: white;">
-                    <h1 style="margin: 0; font-size: 24px;">Welcome to LawSystem</h1>
-                    <p style="margin: 5px 0 0; font-size: 14px; opacity: 0.9;">Your account is ready!</p>
-                </div>
+                <div style="font-family: Arial, sans-serif; background-color: #f4f9ff; padding: 20px;">
+                    <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
+                        
+                        <!-- Header -->
+                        <div style="background: linear-gradient(135deg, #1e3a8a, #3b82f6); padding: 20px; text-align: center; color: white;">
+                            <h1 style="margin: 0; font-size: 24px;">Welcome to Intern Monitoring & Evaluation System</h1>
+                            <p style="margin: 5px 0 0; font-size: 14px; opacity: 0.9;">Your account is now active!</p>
+                        </div>
 
-                <div style="padding: 20px;">
-                    <h2 style="color: #333;">Hello ${email},</h2>
-                    <p style="color: #555; font-size: 15px;">
-                        We are excited to let you know that your account has been successfully created on <strong>LawSystem</strong>.
-                    </p>
+                        <!-- Body -->
+                        <div style="padding: 20px;">
+                            <h2 style="color: #1e3a8a;">Hello ${email},</h2>
+                            <p style="color: #444; font-size: 15px;">
+                                We are excited to let you know that your account has been successfully created on the 
+                                <strong>Intern Monitoring & Evaluation System</strong>.
+                            </p>
 
-                    <p style="color: #555; font-size: 15px;">
-                        Please use the credentials below to log in:
-                    </p>
+                            <p style="color: #444; font-size: 15px;">
+                                Please use the credentials below to log in:
+                            </p>
 
-                    <div style="background-color: #f4f3ff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-top: 10px; font-family: monospace; font-size: 14px;">
-                        <p style="margin: 0;"><strong>Email:</strong> ${email}</p>
-                        <p style="margin: 0;"><strong>Password:</strong> ${otp}</p>
+                            <!-- Credentials -->
+                            <div style="background-color: #e0f2fe; padding: 15px; border-radius: 8px; border: 1px solid #bfdbfe; margin-top: 10px; font-family: monospace; font-size: 14px;">
+                                <p style="margin: 0;"><strong>Email:</strong> ${email}</p>
+                                <p style="margin: 0;"><strong>Password:</strong> ${otp}</p>
+                            </div>
+
+                            <p style="color: #b91c1c; font-size: 14px; margin-top: 15px;">
+                                <strong>IMPORTANT:</strong> Please change your password immediately after your first login.
+                            </p>
+
+                            <p style="color: #666; font-size: 13px; margin-top: 15px;">
+                                This password is valid for the next 10 minutes. Do not share it with anyone.
+                            </p>
+
+                            <p style="margin-top: 20px; font-size: 15px; color: #1e3a8a;">
+                                Best regards,<br>
+                                <strong>Intern Monitoring & Evaluation System Team</strong>
+                            </p>
+                        </div>
                     </div>
 
-                    <p style="color: #b91c1c; font-size: 14px; margin-top: 15px;">
-                        <strong>IMPORTANT:</strong> Please change your password immediately after your first login.
-                    </p>
-
-                    <p style="color: #888; font-size: 13px; margin-top: 15px;">
-                        This password is valid for the next 10 minutes. Do not share it with anyone.
-                    </p>
-
-                    <p style="margin-top: 20px; font-size: 15px; color: #333;">
-                        Best regards,<br>
-                        <strong>LawSystem Team</strong>
+                    <!-- Footer -->
+                    <p style="text-align: center; font-size: 12px; color: #888; margin-top: 15px;">
+                        © ${new Date().getFullYear()} Intern Monitoring & Evaluation System. All rights reserved.
                     </p>
                 </div>
-            </div>
-
-            <p style="text-align: center; font-size: 12px; color: #999; margin-top: 15px;">
-                © ${new Date().getFullYear()} LawSystem. All rights reserved.
-            </p>
-        </div>
-    `,
+                `,
             });
+
 
             const hashgenaretedpassword = await bcrypt.hash(otp, 10)
 
@@ -252,8 +259,8 @@ const AdminController = {
             checkuser.isActive = newStatus;
             await checkuser.save();
 
-            return res.json({ 
-                success: true, 
+            return res.json({
+                success: true,
                 message: `User status updated to ${newStatus ? "Active" : "Inactive"}`,
             });
         }
@@ -262,26 +269,26 @@ const AdminController = {
         }
     },
 
-    get_user_activities: async(req, res) => {
-        try{
+    get_user_activities: async (req, res) => {
+        try {
             const useractivities = await Userlogs.find().populate('user')
 
             return res.json({ success: true, result: useractivities })
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
     },
 
-    get_one_activity: async(req, res) => {
-        try{
+    get_one_activity: async (req, res) => {
+        try {
             const log_id = req.params.id
 
             const getactivity = await Userlogs.findById(log_id).populate('user')
 
             return res.json({ success: true, result: getactivity })
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
     }
