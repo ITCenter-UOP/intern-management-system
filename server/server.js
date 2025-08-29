@@ -5,6 +5,8 @@ const path = require('path');
 
 require("dotenv").config();
 
+const adminRoute = require('./routes/admincotrolroute')
+
 const app = express();
 
 // Initialize Secure-MERN
@@ -12,6 +14,8 @@ secureMern(app);
 
 // File serving for uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use('/admin', adminRoute)
 
 app.get('/', (req, res) => {
     res.send(`Server running on port ${process.env.PORT}`);
