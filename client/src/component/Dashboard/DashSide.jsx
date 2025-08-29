@@ -2,16 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
     MdDashboard,
-    MdPeople,
     MdSettings,
-    MdAssessment,
     MdLogout,
-    MdFolderOpen,
+    MdHistory,
+    MdAssessment,
     MdAssignment,
-    MdHistory
+    MdWork,
+    MdGroup,
+    MdOutlineMail,
+    MdCheckCircle,
+    MdPerson,
 } from 'react-icons/md';
-import { FaBalanceScale } from "react-icons/fa"
-import { FaUserShield, FaChevronDown, FaChevronUp, FaUsers } from "react-icons/fa6";
+import { FaBalanceScale } from "react-icons/fa";
+import { 
+    FaUserShield, 
+    FaChevronDown, 
+    FaChevronUp, 
+    FaUsers, 
+    FaDiagramProject,   // ✅ instead of FaProjectDiagram
+    FaClipboardList, 
+    FaUserGraduate, 
+    FaRegFile          // ✅ instead of FaFileAlt
+} from "react-icons/fa6";
 import { useAuth } from '../../context/AuthContext';
 import API from '../../services/api';
 
@@ -65,7 +77,7 @@ const DashSide = () => {
         }
     }, [pimg]);
 
-    // Menu items configuration
+    // Menu items configuration with updated unique icons
     const menuItems = [
         { link: '/Dashboard', name: 'Overview', icon: <MdDashboard /> },
 
@@ -75,26 +87,61 @@ const DashSide = () => {
             icon: <MdAssessment />,
             submenu: [{ name: 'User Reports', link: '/Dashboard/user-reports', icon: <FaUsers /> }]
         },
-        { link: '/Dashboard/requests', name: 'Requests', icon: <MdAssignment /> },
+        { link: '/Dashboard/requests', name: 'Requests', icon: <FaClipboardList /> },
         auth.role === 'admin' && {
             link: '/Dashboard/manage-roles',
             name: 'System Roles',
             icon: <FaUserShield />,
             submenu: [
-                { name: 'Roles', link: '/Dashboard/manage-roles', icon: <FaUserShield /> },
-                { name: 'Permission', link: '/Dashboard/permissions', icon: <FaUserShield /> },
-                { name: 'System Users', link: '/Dashboard/system-users', icon: <FaUserShield /> }
+                { name: 'Roles', link: '/Dashboard/manage-roles', icon: <MdSettings /> },
+                { name: 'Permission', link: '/Dashboard/permissions', icon: <FaBalanceScale /> },
+                { name: 'System Users', link: '/Dashboard/system-users', icon: <MdGroup /> }
             ]
         },
-        auth.role === 'admin' && {
-            link: '/Dashboard/my-attendance',
-            name: 'Intern Attendance',
-            icon: <FaUserShield />,
+        (auth.role === 'admin' || auth.role === 'staff' || auth.role === 'supervisor') && {
+            link: '/Dashboard/projects',
+            name: 'Projects',
+            icon: <FaDiagramProject />,
         },
-        auth.role === 'admin' && {
+        (auth.role === 'admin' || auth.role === 'staff' || auth.role === 'supervisor') && {
+            link: '/Dashboard/attendance',
+            name: 'Attendance',
+            icon: <MdCheckCircle />,
+        },
+        (auth.role === 'admin' || auth.role === 'staff' || auth.role === 'supervisor') && {
+            link: '/Dashboard/letters',
+            name: 'Letters',
+            icon: <MdOutlineMail />,
+        },
+        (auth.role === 'supervisor') && {
+            link: '/Dashboard/my-interns',
+            name: 'My Interns',
+            icon: <FaUserGraduate />,
+        },
+        (auth.role === 'intern') && {
+            link: '/Dashboard/my-letters',
+            name: 'My letters',
+            icon: <FaRegFile />,
+        },
+        (auth.role === 'supervisor') && {
+            link: '/Dashboard/supervisor-projects',
+            name: 'Supervisor Projects',
+            icon: <MdWork />,
+        },
+        (auth.role === 'intern') && {
+            link: '/Dashboard/my-projects',
+            name: 'My Projects',
+            icon: <FaDiagramProject />,
+        },
+        (auth.role === 'admin' || auth.role === 'staff' || auth.role === 'supervisor') && {
+            link: '/Dashboard/intern-attendance',
+            name: 'Intern Attendance',
+            icon: <MdGroup />,
+        },
+        (auth.role === 'intern') && {
             link: '/Dashboard/my-attendance',
             name: 'My Attendance',
-            icon: <FaUserShield />,
+            icon: <MdCheckCircle />,
         },
         { link: '/Dashboard/activities', name: 'User Activities', icon: <MdHistory /> },
     ].filter(Boolean); // remove false items for non-admin users
