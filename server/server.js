@@ -6,6 +6,7 @@ const path = require('path');
 require("dotenv").config();
 
 const adminRoute = require('./routes/admincotrolroute')
+const projectRoute = require('./routes/projectRoute')
 
 const app = express();
 
@@ -16,6 +17,7 @@ secureMern(app);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use('/admin', adminRoute)
+app.use('/project', projectRoute)
 
 app.get('/', (req, res) => {
     res.send(`Server running on port ${process.env.PORT}`);

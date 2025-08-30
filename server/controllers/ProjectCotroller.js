@@ -1,3 +1,4 @@
+const logUserAction = require("secure-mern/utils/logUserAction");
 const Project = require("../models/Project");
 const User = require("../node_modules/secure-mern/models/User")
 
@@ -50,6 +51,19 @@ const ProjectController = {
             const resultnewproject = await newproject.save()
 
             if (resultnewproject) {
+                const metadata = {
+                    ipAddress: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+                    userAgent: req.headers['user-agent'],
+                    loginTime: new Date()
+                };
+
+                await logUserAction(
+                    req,
+                    'create_new_project',
+                    `${decoded.email} Create New Project with Project Name ${pname}`,
+                    metadata,
+                    user._id
+                );
                 return res.json({ success: true, message: "Project Created Successfull" })
             }
 
