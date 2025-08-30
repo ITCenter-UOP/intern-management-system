@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { FaUser, FaUserEdit } from 'react-icons/fa'
+import { FaUserEdit } from 'react-icons/fa'
 import { useAuth } from '../../../context/AuthContext'
 import DefaultButton from '../../../component/Buttons/DefaultButton'
 import UpdatePassword from './UpdatePassword'
 import UpdateProfileImage from './UpdateProfileImage'
 import API from '../../../services/api'
+import InternProfile from './InternProfile'
 
 const Profile = () => {
     const { auth } = useAuth()
@@ -112,6 +113,21 @@ const Profile = () => {
                                 : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                                 }`}
                         />
+
+                        {
+                            auth.role === 'intern' && (
+                                <DefaultButton
+                                    onClick={() => setActiveTab("intern_profile")}
+                                    type="button"
+                                    label="Update Intern Profile"
+                                    className={`px-6 py-2 rounded-xl shadow transition-all duration-200 ${activeTab === "intern_profile"
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                                        }`}
+                                />
+                            )
+                        }
+
                     </div>
                 </div>
             </div>
@@ -126,6 +142,11 @@ const Profile = () => {
                 {activeTab === "password" && (
                     <div className="bg-white rounded-2xl shadow p-6">
                         <UpdatePassword />
+                    </div>
+                )}
+                {((auth?.role === 'intern') && activeTab === "intern_profile") && (
+                    <div className="bg-white rounded-2xl shadow p-6">
+                        <InternProfile />
                     </div>
                 )}
             </div>
