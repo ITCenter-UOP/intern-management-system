@@ -14,14 +14,14 @@ import {
     MdPerson,
 } from 'react-icons/md';
 import { FaBalanceScale } from "react-icons/fa";
-import { 
-    FaUserShield, 
-    FaChevronDown, 
-    FaChevronUp, 
-    FaUsers, 
+import {
+    FaUserShield,
+    FaChevronDown,
+    FaChevronUp,
+    FaUsers,
     FaDiagramProject,   // ✅ instead of FaProjectDiagram
-    FaClipboardList, 
-    FaUserGraduate, 
+    FaClipboardList,
+    FaUserGraduate,
     FaRegFile          // ✅ instead of FaFileAlt
 } from "react-icons/fa6";
 import { useAuth } from '../../context/AuthContext';
@@ -143,7 +143,12 @@ const DashSide = () => {
             name: 'My Attendance',
             icon: <MdCheckCircle />,
         },
-        { link: '/Dashboard/activities', name: 'User Activities', icon: <MdHistory /> },
+
+        (auth.role === 'admin' || auth.role === 'staff') && {
+            link: '/Dashboard/activities',
+            name: 'User Activities',
+            icon: <MdHistory />,
+        },
     ].filter(Boolean); // remove false items for non-admin users
 
     return (

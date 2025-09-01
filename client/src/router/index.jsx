@@ -52,8 +52,9 @@ function App() {
                     <Route path='create-permissions' element={<PrivateRoute roles={['admin']}><CreatePermissions /></PrivateRoute>} />
                     <Route path='view-permissions/:id' element={<PrivateRoute roles={['admin']}><ViewPermission /></PrivateRoute>} />
                     <Route path='create-newrole' element={<PrivateRoute roles={['admin']}><CreateNewRole /></PrivateRoute>} />
-                    <Route path='activities' element={<PrivateRoute roles={['admin']}><Activities /></PrivateRoute>} />
-                    <Route path='view-activity/:id' element={<PrivateRoute roles={['admin']}><ViewActivity /></PrivateRoute>} />
+                    
+                    <Route path='activities' element={<PrivateRoute roles={['admin', 'staff']}><Activities /></PrivateRoute>} />
+                    <Route path='view-activity/:id' element={<PrivateRoute roles={['admin', 'staff']}><ViewActivity /></PrivateRoute>} />
 
 
                     <Route path='projects' element={<PrivateRoute roles={['admin', 'supervisor']}><ManageProjects /> </PrivateRoute> } />
