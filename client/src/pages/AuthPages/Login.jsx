@@ -48,15 +48,19 @@ const Login = () => {
 
                 <div className="">
                     <div className="flex justify-around mt-8">
-                        <img src={uoplogo} alt="" className='h-28 w-auto'/>
-                        <img src={ceitlogo} alt="" className='h-28 w-auto'/>
+                        <img src={uoplogo} alt="" className='h-28 w-auto' />
+                        <img src={ceitlogo} alt="" className='h-28 w-auto' />
                     </div>
 
                     <div className="mt-8 text-center">
                         <h1 className="uppercase text-2xl font-semibold">University of Peradeniya</h1>
                         <p className="">Information Technology Center</p>
                     </div>
-                    
+
+                    <div className="mt-10">
+                        <p className="text-sm font-semibold text-gray-500">Intern Monitoring and Evaluation System - v1.0.0 (beta relase) <a href="" className='text-blue-500 hover:underline'>Read Relase Note</a></p>
+                    </div>
+
                 </div>
             </div>
 
