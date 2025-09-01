@@ -16,21 +16,21 @@ const InternController = {
                 return res.status(400).json({ message: "Invalid token." });
             }
 
-            // console.log("Decoded Token:", decoded);
-
             const user = await User.findOne({ email: decoded.email });
             if (!user) return res.status(404).json({ message: "User not found" });
 
             const {
                 InternshipEndAt,
                 address,
-                cv,
                 dob,
                 github,
                 linkedin,
                 camups,
                 course
-            } = req.body
+            } = req.body;
+
+            // 📂 Handle CV file (if uploaded)
+            const cvFile = req.file ? req.file.filename : null;
 
             let internInfo = await InternInformation.findOne({ userID: user._id });
 
@@ -40,7 +40,7 @@ const InternController = {
                     userID: user._id,
                     InternshipEndAt,
                     address,
-                    cv,
+                    cv: cvFile,   // ✅ store uploaded CV filename
                     dob,
                     github,
                     linkedin,
@@ -66,7 +66,7 @@ const InternController = {
                     // Later updates: allow everything
                     if (InternshipEndAt) internInfo.InternshipEndAt = InternshipEndAt;
                     if (address) internInfo.address = address;
-                    if (cv) internInfo.cv = cv;
+                    if (cvFile) internInfo.cv = cvFile;   // ✅ update CV if new file uploaded
                     if (dob) internInfo.dob = dob;
                     if (github) internInfo.github = github;
                     if (linkedin) internInfo.linkedin = linkedin;
