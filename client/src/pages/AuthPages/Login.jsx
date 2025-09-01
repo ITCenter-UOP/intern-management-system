@@ -5,6 +5,8 @@ import useForm from '../../hooks/useForm';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import API from '../../services/api';
+import ceitlogo from '../../assets/ceitlogo.png'
+import uoplogo from '../../assets/logo.png'
 
 const Login = () => {
     const { values, handleChange } = useForm({ email: '', password: '' });
@@ -42,6 +44,19 @@ const Login = () => {
                             You need an Account from administartion for access to this system
                         </li>
                     </ul>
+                </div>
+
+                <div className="">
+                    <div className="flex justify-around mt-8">
+                        <img src={uoplogo} alt="" className='h-28 w-auto'/>
+                        <img src={ceitlogo} alt="" className='h-28 w-auto'/>
+                    </div>
+
+                    <div className="mt-8 text-center">
+                        <h1 className="uppercase text-2xl font-semibold">University of Peradeniya</h1>
+                        <p className="">Information Technology Center</p>
+                    </div>
+                    
                 </div>
             </div>
 
