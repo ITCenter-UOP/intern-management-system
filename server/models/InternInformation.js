@@ -27,7 +27,7 @@ const InternInformationSchema = new mongoose.Schema({
     isOneIntern: { type: Boolean, required: true, default: true },
 }, { timestamps: true });
 
-InternSchema.pre('save', function (next) {
+InternInformationSchema.pre('save', function (next) {
     if (this.InternshipEndAt) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);

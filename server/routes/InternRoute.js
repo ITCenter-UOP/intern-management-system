@@ -8,4 +8,6 @@ const router = express.Router();
 
 router.post('/update-intern-information', auth, checkPermission(['interninfor:update']), upload.single('cv'), InternController.update_intern_data)
 
+router.get('/get-intern-information', auth, InternController.get_intern_data)
+
 module.exports = router;
