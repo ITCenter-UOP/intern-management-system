@@ -23,6 +23,7 @@ import ViewActivity from '../pages/Dashboard/UserActivities/ViewActivity'
 import ManageProjects from '../pages/Dashboard/Project/ManageProjects'
 import CreateProject from '../pages/Dashboard/Project/CreateProject'
 import InternProfile from '../pages/Dashboard/Profile/InternProfile'
+import ManageAttendance from '../pages/Dashboard/Attendance/ManageAttendance'
 
 function App() {
 
@@ -55,7 +56,7 @@ function App() {
                     
                     <Route path='activities' element={<PrivateRoute roles={['admin', 'staff']}><Activities /></PrivateRoute>} />
                     <Route path='view-activity/:id' element={<PrivateRoute roles={['admin', 'staff']}><ViewActivity /></PrivateRoute>} />
-
+                    <Route path='intern-attendance' element={<PrivateRoute roles={['admin', 'staff']}><ManageAttendance /></PrivateRoute>} />
 
                     <Route path='projects' element={<PrivateRoute roles={['admin', 'supervisor']}><ManageProjects /> </PrivateRoute> } />
                     <Route path='create-project' element={<PrivateRoute roles={['admin', 'supervisor']}><CreateProject /> </PrivateRoute> } />
