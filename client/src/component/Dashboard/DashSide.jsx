@@ -82,13 +82,6 @@ const DashSide = () => {
         { link: '/Dashboard', name: 'Overview', icon: <MdDashboard /> },
 
         auth.role === 'admin' && {
-            link: '/Dashboard/reports',
-            name: 'Reports',
-            icon: <MdAssessment />,
-            submenu: [{ name: 'User Reports', link: '/Dashboard/user-reports', icon: <FaUsers /> }]
-        },
-        { link: '/Dashboard/requests', name: 'Requests', icon: <FaClipboardList /> },
-        auth.role === 'admin' && {
             link: '/Dashboard/manage-roles',
             name: 'System Roles',
             icon: <FaUserShield />,
@@ -102,11 +95,6 @@ const DashSide = () => {
             link: '/Dashboard/projects',
             name: 'Projects',
             icon: <FaDiagramProject />,
-        },
-        (auth.role === 'admin' || auth.role === 'staff' || auth.role === 'supervisor') && {
-            link: '/Dashboard/attendance',
-            name: 'Attendance',
-            icon: <MdCheckCircle />,
         },
         (auth.role === 'admin' || auth.role === 'staff' || auth.role === 'supervisor') && {
             link: '/Dashboard/letters',

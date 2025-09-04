@@ -53,7 +53,7 @@ const SystemUsers = () => {
                     "Cache-Control": "no-cache",
                     Pragma: "no-cache",
                     Expires: "0",
-                },                
+                },
             });
 
             if (res.data.success) {
@@ -152,7 +152,7 @@ const SystemUsers = () => {
                                 <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white divide-y divide-gray-200 text-sm">
                             {loading ? (
                                 <tr>
                                     <td colSpan="8" className="text-center py-4 text-gray-500">Loading...</td>
@@ -190,16 +190,28 @@ const SystemUsers = () => {
                                             <p>last Update: <span className="text-blue-800 font-bold">{new Date(user.updatedAt).toLocaleDateString()}</span></p>
                                         </td>
                                         <td className="px-6 py-3">
-                                            {user?.role?.name === "admin" || user._id === auth.id ? (
-                                                <p>This Account Cannot be Updated or Deleted</p>
-                                            ) : (
-                                                <span
-                                                    className="text-blue-600 hover:underline cursor-pointer font-semibold"
-                                                    onClick={() => handleUpdateUserStatus(user._id)}
-                                                >
-                                                    Click to {user.isActive ? "Deactive" : "Active"}
-                                                </span>
-                                            )}
+                                            <div className="flex justify-between">
+                                                <div className="">
+                                                    {user?.role?.name === "admin" || user._id === auth.id ? (
+                                                        <p>This Account Cannot be Updated or Deleted</p>
+                                                    ) : (
+                                                        <span
+                                                            className="text-blue-600 hover:underline cursor-pointer font-semibold"
+                                                            onClick={() => handleUpdateUserStatus(user._id)}
+                                                        >
+                                                            Click to {user.isActive ? "Deactive" : "Active"}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div>
+                                                    {user?.role?.name === "intern" && (
+                                                        <Link>
+                                                            <p className="text-blue-600 hover:underline">View</p>
+                                                        </Link>
+                                                    )}
+                                                </div>
+
+                                            </div>
                                         </td>
                                     </tr>
                                 ))

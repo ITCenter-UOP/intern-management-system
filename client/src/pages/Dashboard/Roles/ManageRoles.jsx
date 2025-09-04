@@ -146,7 +146,7 @@ const ManageRoles = () => {
                                     </td>
                                     <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-800">
                                         {
-                                            role.name === 'admin' || role.name === 'judge' || role.name === 'lawyer' || role.name === 'member' ? 
+                                            role.name === 'admin' || role.name === 'supervisor' || role.name === 'staff' || role.name === 'intern' ? 
                                             <div className="">The Default System roles cannot be Deleted</div>
                                             :
                                             <div className="">
