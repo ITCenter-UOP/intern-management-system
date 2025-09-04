@@ -16,7 +16,6 @@ import SystemUsers from '../pages/Dashboard/Roles/SystemUsers'
 import CreateUser from '../pages/Dashboard/Roles/CreateUser'
 import Unauthorized from './Unauthorized'
 import CreatePermissions from '../pages/Dashboard/Roles/CreatePermissions'
-import ViewPermission from '../pages/Dashboard/Roles/VIewPermission'
 import Profile from '../pages/Dashboard/Profile/Profile'
 import Activities from '../pages/Dashboard/UserActivities/Activities'
 import ViewActivity from '../pages/Dashboard/UserActivities/ViewActivity'
@@ -25,6 +24,8 @@ import CreateProject from '../pages/Dashboard/Project/CreateProject'
 import InternProfile from '../pages/Dashboard/Profile/InternProfile'
 import ManageAttendance from '../pages/Dashboard/Attendance/ManageAttendance'
 import MyAttendance from '../pages/Dashboard/Attendance/MyAttendance'
+import ViewIntern from '../pages/Dashboard/Roles/ViewIntern'
+import ViewPermission from '../pages/Dashboard/Roles/ViewPermission'
 
 function App() {
 
@@ -54,16 +55,18 @@ function App() {
                     <Route path='create-permissions' element={<PrivateRoute roles={['admin']}><CreatePermissions /></PrivateRoute>} />
                     <Route path='view-permissions/:id' element={<PrivateRoute roles={['admin']}><ViewPermission /></PrivateRoute>} />
                     <Route path='create-newrole' element={<PrivateRoute roles={['admin']}><CreateNewRole /></PrivateRoute>} />
-                    
+
                     <Route path='activities' element={<PrivateRoute roles={['admin', 'staff']}><Activities /></PrivateRoute>} />
                     <Route path='view-activity/:id' element={<PrivateRoute roles={['admin', 'staff']}><ViewActivity /></PrivateRoute>} />
                     <Route path='intern-attendance' element={<PrivateRoute roles={['admin', 'staff']}><ManageAttendance /></PrivateRoute>} />
 
-                    <Route path='projects' element={<PrivateRoute roles={['admin', 'supervisor']}><ManageProjects /> </PrivateRoute> } />
-                    <Route path='create-project' element={<PrivateRoute roles={['admin', 'supervisor']}><CreateProject /> </PrivateRoute> } />
+                    <Route path='view-intern/:email' element={<PrivateRoute roles={['admin', 'staff']}><ViewIntern /></PrivateRoute>} />
 
-                    <Route path='intern-profile' element={<PrivateRoute roles={['admin', 'intern']}><InternProfile /> </PrivateRoute> } />
-                    <Route path='my-attendance' element={<PrivateRoute roles={['admin', 'intern']}><MyAttendance /> </PrivateRoute> } />
+                    <Route path='projects' element={<PrivateRoute roles={['admin', 'supervisor']}><ManageProjects /> </PrivateRoute>} />
+                    <Route path='create-project' element={<PrivateRoute roles={['admin', 'supervisor']}><CreateProject /> </PrivateRoute>} />
+
+                    <Route path='intern-profile' element={<PrivateRoute roles={['admin', 'intern']}><InternProfile /> </PrivateRoute>} />
+                    <Route path='my-attendance' element={<PrivateRoute roles={['admin', 'intern']}><MyAttendance /> </PrivateRoute>} />
 
                 </Route>
 

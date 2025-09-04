@@ -10,4 +10,7 @@ router.post('/update-intern-information', auth, checkPermission(['interninfor:up
 
 router.get('/get-intern-information', auth, InternController.get_intern_data)
 
+router.get('/intern-data/:email', auth, checkPermission(['interndata:get']), InternController.admin_get_interndata)
+
+
 module.exports = router;

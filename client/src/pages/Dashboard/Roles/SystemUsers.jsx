@@ -205,7 +205,7 @@ const SystemUsers = () => {
                                                 </div>
                                                 <div>
                                                     {user?.role?.name === "intern" && (
-                                                        <Link>
+                                                        <Link to={`/Dashboard/view-intern/${user.email}`}>
                                                             <p className="text-blue-600 hover:underline">View</p>
                                                         </Link>
                                                     )}

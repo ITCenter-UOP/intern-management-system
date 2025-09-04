@@ -124,6 +124,22 @@ const InternController = {
             console.log(err);
             return res.status(500).json({ message: "Server error" });
         }
+    },
+
+    admin_get_interndata: async (req, res) => {
+        try {
+            const email = req.params.email
+
+            const get_intern_as_user = await User.findOne({ email: email })
+
+            const get_intern = await InternInformation.findOne({ userID: get_intern_as_user._id })
+
+            return res.json({ success: true, result: get_intern })
+        }
+        catch (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        }
     }
 };
 
