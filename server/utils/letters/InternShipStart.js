@@ -1,7 +1,10 @@
 const PDFDocument = require("pdfkit");
 const path = require("path");
 
-const createInternShipStartLetter = async ({ date, name, startdate, enddate, superviosrname, req }) => {
+// ✅ Added
+const fs = require("fs");
+
+const createInternShipStartLetter = async ({ date, name, startdate, enddate, superviosrname, req, res }) => {
     try {
         // Create PDF
         const doc = new PDFDocument({ margin: 50 });
@@ -10,7 +13,17 @@ const createInternShipStartLetter = async ({ date, name, startdate, enddate, sup
         res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
         res.setHeader("Content-Type", "application/pdf");
 
+        // ✅ Added: create folder & file path
+        const folderPath = path.join(__dirname, "..", "upload", "letters", "internshipstart");
+        if (!fs.existsSync(folderPath)) {
+            fs.mkdirSync(folderPath, { recursive: true });
+        }
+        const savePath = path.join(folderPath, filename);
+        const fileStream = fs.createWriteStream(savePath);
+
+        // ✅ Pipe to both response (download) and file (save)
         doc.pipe(res);
+        doc.pipe(fileStream);
 
         // ✅ Load your images
         const logoLeft = path.join(__dirname, "src", "uoplogo.png");
@@ -94,6 +107,12 @@ const createInternShipStartLetter = async ({ date, name, startdate, enddate, sup
 
         // Finalize PDF
         doc.end();
+
+        // ✅ Added: return file path when finished
+        return new Promise((resolve, reject) => {
+            fileStream.on("finish", () => resolve(savePath));
+            fileStream.on("error", reject);
+        });
     }
     catch (error) {
         console.error("Register Service Error:", error);
