@@ -64,7 +64,7 @@ const createInternShipStartLetter = async ({ date, name, startdate, enddate, sup
             `Department: ICT Center`,
             `Duration: ${startdate} – ${enddate}`,
             `Supervisor: ${superviosrname}`,
-            "Working Hours: 8:30 AM – 4:30 PM, Monday to Friday"
+            "Working Hours: 8:00 AM – 4:00 PM, Monday to Friday"
         ];
 
         details.forEach(item => {
