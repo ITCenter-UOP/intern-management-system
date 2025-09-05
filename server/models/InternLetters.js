@@ -11,6 +11,10 @@ const InternLettersSchema = new mongoose.Schema({
         enum: ['internship_start_letter', 'letter_of_internship'],
         required: true
     },
+    letter_store_path: {
+        type: String,
+        required: true
+    },    
     letter_infor: [
         {
             issue_at: { type: Date },
