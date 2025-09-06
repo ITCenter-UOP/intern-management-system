@@ -67,7 +67,7 @@ const createInternShipStartLetter = async ({ date, name, startdate, enddate, sup
         ).moveDown(1);
 
         doc.text(
-            "Please report to the ICT Center, University of Peradeniya, at 8:30 AM on your start date to commence your training. Kindly bring a copy of this letter and your student identification card on your first day.",
+            "Please report to the ICT Center, University of Peradeniya, at 8:00 AM on your start date to commence your training. Kindly bring a copy of this letter and your student identification card on your first day.",
             { lineGap: 2 }
         ).moveDown(1);
 
