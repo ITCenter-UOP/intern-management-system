@@ -26,6 +26,7 @@ import ManageAttendance from '../pages/Dashboard/Attendance/ManageAttendance'
 import MyAttendance from '../pages/Dashboard/Attendance/MyAttendance'
 import ViewIntern from '../pages/Dashboard/Roles/ViewIntern'
 import ViewPermission from '../pages/Dashboard/Roles/ViewPermission'
+import ManageLetters from '../pages/Dashboard/Letters/ManageLetters'
 
 function App() {
 
@@ -59,6 +60,8 @@ function App() {
                     <Route path='activities' element={<PrivateRoute roles={['admin', 'staff']}><Activities /></PrivateRoute>} />
                     <Route path='view-activity/:id' element={<PrivateRoute roles={['admin', 'staff']}><ViewActivity /></PrivateRoute>} />
                     <Route path='intern-attendance' element={<PrivateRoute roles={['admin', 'staff']}><ManageAttendance /></PrivateRoute>} />
+                    <Route path='letters' element={<PrivateRoute roles={['admin', 'staff', 'supervisor']}><ManageLetters /></PrivateRoute>} />
+                    
 
                     <Route path='view-intern/:email' element={<PrivateRoute roles={['admin', 'staff']}><ViewIntern /></PrivateRoute>} />
 
