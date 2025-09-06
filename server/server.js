@@ -8,6 +8,7 @@ require("dotenv").config();
 const adminRoute = require('./routes/admincotrolroute')
 const projectRoute = require('./routes/projectRoute')
 const internRoute = require('./routes/InternRoute')
+const letterRoute = require('./routes/letterRoute')
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use('/admin', adminRoute)
 app.use('/project', projectRoute)
 app.use('/intern', internRoute)
-
+app.use('/letter', letterRoute)
 
 app.get('/', (req, res) => {
     res.send(`Server running on port ${process.env.PORT}`);

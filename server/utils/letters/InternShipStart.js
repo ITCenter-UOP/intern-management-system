@@ -14,7 +14,7 @@ const createInternShipStartLetter = async ({ date, name, startdate, enddate, sup
         res.setHeader("Content-Type", "application/pdf");
 
         // ✅ Added: create folder & file path
-        const folderPath = path.join(__dirname, "..", "upload", "letters", "internshipstart");
+        const folderPath = path.join(process.cwd(), "uploads", "letters", "internshipstart");
         if (!fs.existsSync(folderPath)) {
             fs.mkdirSync(folderPath, { recursive: true });
         }
@@ -26,8 +26,8 @@ const createInternShipStartLetter = async ({ date, name, startdate, enddate, sup
         doc.pipe(fileStream);
 
         // ✅ Load your images
-        const logoLeft = path.join(__dirname, "src", "uoplogo.png");
-        const logoRight = path.join(__dirname, "src", "ceitlogo.png");
+        const logoLeft = path.join(process.cwd(), "assets", "uoplogo.png");
+        const logoRight = path.join(process.cwd(), "assets", "ceitlogo.png");
 
         // Insert logos
         doc.image(logoLeft, 50, 40, { width: 80 });   // left logo
