@@ -66,8 +66,6 @@ const ProjectController = {
                 );
                 return res.json({ success: true, message: "Project Created Successfull" })
             }
-
-
         }
         catch (err) {
             console.log(err)
