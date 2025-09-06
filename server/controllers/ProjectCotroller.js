@@ -1,6 +1,7 @@
 const logUserAction = require("secure-mern/utils/logUserAction");
 const Project = require("../models/Project");
 const User = require("../node_modules/secure-mern/models/User")
+const jwt = require('jsonwebtoken')
 
 const ProjectController = {
     create_project: async (req, res) => {
@@ -25,33 +26,28 @@ const ProjectController = {
                 pname,
                 pdescription,
                 giturl,
-                pmembers,
                 psupervisor,
                 pstartdate,
                 estimatedEndDate
-            } = req.body
+            } = req.body;
 
-            const checkproject = await Project.findOne({ pname: pname })
+
+            const checkproject = await Project.findOne({ pname });
             if (checkproject) {
-                return res.json({ success: false, message: "Project is Already in System, choose another project Name" })
+                return res.json({ success: false, message: "Project is Already in System, choose another project Name" });
             }
 
             const newproject = new Project({
-                pname: pname,
-                pdescription: pdescription,
-                giturl: giturl,
-                pmembers: pmembers,
-                psupervisor: psupervisor,
-                pstartdate: pstartdate,
-                estimatedEndDate: estimatedEndDate
-            })
+                pname,
+                pdescription,
+                giturl,
+                psupervisor,
+                pstartdate,
+                estimatedEndDate,
+                projectFile: req.file ? req.file.path : null   // ✅ store uploaded file path
+            });
 
-   
-            if (req.file) {
-                newproject.projectfiles = req.file.path; 
-            }
-
-            const resultnewproject = await newproject.save()
+            const resultnewproject = await newproject.save();
 
             if (resultnewproject) {
                 const metadata = {
@@ -67,13 +63,28 @@ const ProjectController = {
                     metadata,
                     user._id
                 );
-                return res.json({ success: true, message: "Project Created Successfull" })
+
+                return res.json({ success: true, message: "Project Created Successfully" });
             }
+        } catch (err) {
+            console.error("❌ Error in create_project:", err);
+            res.status(500).json({ success: false, message: "Server error while creating project" });
+        }
+    },
+
+
+    get_all_projects: async(req, res) => {
+        try{
+            const getprojects = await Project.find().populate('pmembers').populate('psupervisor')
+
+            return res.json({ success: true, result: getprojects})
         }
         catch (err) {
-            console.log(err)
+            console.error("❌ Error in create_project:", err);
+            res.status(500).json({ success: false, message: "Server error while creating project" });
         }
     }
+
 
 };
 

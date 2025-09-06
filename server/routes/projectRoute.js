@@ -8,5 +8,6 @@ const router = express.Router();
 
 router.post('/create-project', auth, checkPermission(['project:create']), upload.single('projectFile'), ProjectController.create_project)
 
+router.get('/get_all_projects', auth, checkPermission(['project:allprojects']), ProjectController.get_all_projects)
 
 module.exports = router;

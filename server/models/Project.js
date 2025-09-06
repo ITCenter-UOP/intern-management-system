@@ -33,7 +33,7 @@ const ProjectSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    projectfiles: {
+    projectFile: {
         type: String,
     }
 }, { timestamps: true });

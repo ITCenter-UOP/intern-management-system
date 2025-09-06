@@ -12,15 +12,17 @@ import TextAreaInput from '../../../component/Form/TextAreaInput'
 import FileInput from '../../../component/Form/FileInput'
 
 const CreateProject = () => {
-    const { values, handleChange, setValues } = useForm({
+    const { values, handleChange } = useForm({
         pname: '',
         pdescription: '',
         giturl: '',
         psupervisor: '',
         pstartdate: '',
         estimatedEndDate: '',
-        projectFile: null,
     });
+
+    // separate state for file upload
+    const [file, setFile] = useState(null);
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -29,7 +31,7 @@ const CreateProject = () => {
     const token = localStorage.getItem("token");
 
     const handleFileChange = (e) => {
-        setValues({ ...values, [e.target.name]: e.target.files[0] });
+        setFile(e.target.files[0]);
     };
 
     // Fetch system users and filter supervisors
@@ -62,8 +64,11 @@ const CreateProject = () => {
             Object.keys(values).forEach((key) => {
                 formData.append(key, values[key]);
             });
+            if (file) {
+                formData.append("projectFile", file);
+            }
 
-            const res = await API.post(`/project/create?nocache=${Date.now()}`, formData, {
+            const res = await API.post(`/project/create-project?nocache=${Date.now()}`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Cache-Control": "no-cache",
@@ -167,6 +172,11 @@ const CreateProject = () => {
                     onChange={handleFileChange}
                     accept=".pdf,.doc,.docx,.zip"
                 />
+                {file && (
+                    <p className="text-sm text-gray-500 mb-3">
+                        Selected file: <span className="font-medium">{file.name}</span>
+                    </p>
+                )}
 
                 <div className="mt-6 flex justify-end">
                     <DefaultButton
