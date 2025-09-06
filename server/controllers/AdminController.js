@@ -230,7 +230,7 @@ const AdminController = {
 
             const checkroleid = await Role.findById(role_id)
 
-            const protectedRoles = ['admin', 'judge', 'lawyer', 'member'];
+            const protectedRoles = ['admin', 'supervisor', 'staff', 'intern'];
             if (protectedRoles.includes(checkroleid.name)) {
                 return res.json({ success: false, message: "Cannot continue process" });
             }

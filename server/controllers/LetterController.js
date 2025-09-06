@@ -2,6 +2,7 @@ const User = require("secure-mern/models/User");
 const InternLetters = require("../models/InternLetters");
 const { createInternShipStartLetter } = require("../utils/letters/InternShipStart");
 const sendEmail = require("secure-mern/utils/emailTransporter");
+const jwt = require('jsonwebtoken')
 
 const LetterController = {
     create_internship_start_letter: async (req, res) => {
@@ -84,8 +85,36 @@ const LetterController = {
     get_all_letters: async (req, res) => {
         try {
             const get_letters = await InternLetters.find().populate('userID')
-            
+
             return res.json({ success: true, result: get_letters })
+        }
+        catch (err) {
+            console.error("Error creating internship letter:", err);
+            return res.status(500).json({ success: false, message: "Server error", error: err.message });
+        }
+    },
+
+    get_my_letters: async (req, res) => {
+        try {
+            const token = req.header("Authorization")?.replace("Bearer ", "");
+            if (!token) return res.status(401).json({ message: "Access denied. No token provided." });
+
+            let decoded;
+            try {
+                decoded = jwt.verify(token, process.env.JWT_SECRET);
+            } catch (err) {
+                if (err.name === "TokenExpiredError") {
+                    return res.status(401).json({ message: "Token expired. Please log in again." });
+                }
+                return res.status(400).json({ message: "Invalid token." });
+            }
+
+            const user = await User.findOne({ email: decoded.email }).select("-password");
+            if (!user) return res.status(404).json({ message: "User not found" });
+
+            const getmyletters = await InternLetters.find({ userID: user._id })
+
+            return res.json({ success: true, result: getmyletters })
         }
         catch (err) {
             console.error("Error creating internship letter:", err);

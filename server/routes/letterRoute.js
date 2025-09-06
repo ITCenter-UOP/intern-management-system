@@ -9,4 +9,6 @@ router.post('/create-letter', auth, checkPermission(['internshipletter:create'])
 
 router.get('/all-intern-letters', auth, checkPermission(['internshipletter:getall']), LetterController.get_all_letters)
 
+router.get('/get-my-letters', auth, checkPermission(['internshipletter:getmyletters']), LetterController.get_my_letters)
+
 module.exports = router;
