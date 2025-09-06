@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import API from '../../../services/api';
 import useForm from '../../../hooks/useForm';
 import DefaultInput from '../../../component/Form/DefaultInput';
+import { useState } from 'react';
 
 const CreateNewRole = () => {
     const token = localStorage.getItem('token')
@@ -13,7 +14,6 @@ const CreateNewRole = () => {
         role: '',
     });
     const navigate = useNavigate();
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
