@@ -79,6 +79,18 @@ const LetterController = {
             console.error("Error creating internship letter:", err);
             return res.status(500).json({ success: false, message: "Server error", error: err.message });
         }
+    },
+
+    get_all_letters: async (req, res) => {
+        try {
+            const get_letters = await InternLetters.find().populate('userID')
+            
+            return res.json({ success: true, result: get_letters })
+        }
+        catch (err) {
+            console.error("Error creating internship letter:", err);
+            return res.status(500).json({ success: false, message: "Server error", error: err.message });
+        }
     }
 };
 
