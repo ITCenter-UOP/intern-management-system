@@ -29,6 +29,7 @@ import ViewPermission from '../pages/Dashboard/Roles/ViewPermission'
 import ManageLetters from '../pages/Dashboard/Letters/ManageLetters'
 import CreateNewLetter from '../pages/Dashboard/Letters/CreateNewLetter'
 import MyLetters from '../pages/Dashboard/Letters/MyLetters'
+import AssignIntern from '../pages/Dashboard/Project/AssignIntern'
 
 function App() {
 
@@ -70,6 +71,8 @@ function App() {
 
                     <Route path='projects' element={<PrivateRoute roles={['admin', 'supervisor']}><ManageProjects /> </PrivateRoute>} />
                     <Route path='create-project' element={<PrivateRoute roles={['admin', 'supervisor']}><CreateProject /> </PrivateRoute>} />
+                    <Route path='assign-interns/:id' element={<PrivateRoute roles={['admin', 'supervisor', 'staff']}><AssignIntern /> </PrivateRoute>} />
+
 
                     <Route path='intern-profile' element={<PrivateRoute roles={['admin', 'intern']}><InternProfile /> </PrivateRoute>} />
                     <Route path='my-attendance' element={<PrivateRoute roles={['admin', 'intern']}><MyAttendance /> </PrivateRoute>} />

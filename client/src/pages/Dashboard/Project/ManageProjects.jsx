@@ -110,6 +110,11 @@ const ManageProjects = () => {
                                     >
                                         View Project Docs
                                     </a>
+                                    <p className="py-2">
+                                        <Link to={`/Dashboard/assign-interns/${project._id}`}>
+                                            <span className="text-blue-600 font-semibold hover:underline">Assign Intern To Project</span>
+                                        </Link>
+                                    </p>
                                 </div>
                             </div>
                         </div>
