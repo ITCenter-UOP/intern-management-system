@@ -21,7 +21,6 @@ const ProjectController = {
             const user = await User.findOne({ email: decoded.email }).select("-password");
             if (!user) return res.status(404).json({ message: "User not found" });
 
-
             const {
                 pname,
                 pdescription,
@@ -33,7 +32,6 @@ const ProjectController = {
             } = req.body
 
             const checkproject = await Project.findOne({ pname: pname })
-
             if (checkproject) {
                 return res.json({ success: false, message: "Project is Already in System, choose another project Name" })
             }
@@ -47,6 +45,11 @@ const ProjectController = {
                 pstartdate: pstartdate,
                 estimatedEndDate: estimatedEndDate
             })
+
+   
+            if (req.file) {
+                newproject.projectfiles = req.file.path; 
+            }
 
             const resultnewproject = await newproject.save()
 
@@ -71,6 +74,7 @@ const ProjectController = {
             console.log(err)
         }
     }
+
 };
 
 module.exports = ProjectController;

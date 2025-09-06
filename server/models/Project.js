@@ -32,6 +32,9 @@ const ProjectSchema = new mongoose.Schema({
     estimatedEndDate: {
         type: Date,
         required: true,
+    },
+    projectfiles: {
+        type: String,
     }
 }, { timestamps: true });
 
