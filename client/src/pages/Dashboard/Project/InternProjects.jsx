@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FaDiagramProject } from 'react-icons/fa6'
 import API from '../../../services/api';
+import { Link } from 'react-router-dom';
 
 const InternProjects = () => {
     const [myprojects, setmyprojects] = useState([]);
@@ -95,6 +96,13 @@ const InternProjects = () => {
                                     View Project File
                                 </a>
                             )}
+                            <div className="">
+                                <Link>
+                                    <div className="px-4 py-2 text-sm font-medium rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
+                                        Add Today's Doing
+                                    </div>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 ))}

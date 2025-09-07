@@ -111,11 +111,6 @@ const DashSide = () => {
             name: 'My letters',
             icon: <FaRegFile />,
         },
-        (auth.role === 'supervisor') && {
-            link: '/Dashboard/supervisor-projects',
-            name: 'Supervisor Projects',
-            icon: <MdWork />,
-        },
         (auth.role === 'intern') && {
             link: '/Dashboard/my-projects',
             name: 'My Projects',

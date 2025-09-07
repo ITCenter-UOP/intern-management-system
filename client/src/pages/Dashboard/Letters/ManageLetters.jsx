@@ -3,8 +3,10 @@ import { FaFile } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import DefaultButton from '../../../component/Buttons/DefaultButton';
 import API from '../../../services/api';
+import { useAuth } from '../../../context/AuthContext';
 
 const ManageLetters = () => {
+    const { auth } = useAuth();
     const [letters, setLetters] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -60,15 +62,23 @@ const ManageLetters = () => {
             </div>
 
             {/* Create Button */}
-            <div className="mb-6">
-                <Link to={'/Dashboard/create-letter'}>
-                    <DefaultButton
-                        type='button'
-                        label='Create New Intern Letter'
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                    />
-                </Link>
-            </div>
+            {
+                (auth.role === 'admin') ?
+                    <div className="">
+                        <div className="mb-6">
+                            <Link to={'/Dashboard/create-letter'}>
+                                <DefaultButton
+                                    type='button'
+                                    label='Create New Intern Letter'
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                />
+                            </Link>
+                        </div>
+                    </div>
+                    :
+                    <div className=""></div>
+            }
+
 
             {/* Letters Table */}
             <div className="overflow-x-auto rounded-lg shadow-lg border border-gray-200">
