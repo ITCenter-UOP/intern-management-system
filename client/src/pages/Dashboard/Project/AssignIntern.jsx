@@ -79,15 +79,16 @@ const AssignIntern = () => {
         if (selectedInterns.length === 0) return alert("Please select at least one intern!");
         setAssigning(true);
         try {
-            const res = await API.post(`/project/assign-interns/${id}`,
-                { interns: selectedInterns },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            console.log(selectedInterns)
+            // const res = await API.post(`/project/assign-interns/${id}`,
+            //     { interns: selectedInterns },
+            //     { headers: { Authorization: `Bearer ${token}` } }
+            // );
 
-            if (res.data.success === true) {
-                alert(res.data.message);
-                setSelectedInterns([]);
-            }
+            // if (res.data.success === true) {
+            //     alert(res.data.message);
+            //     setSelectedInterns([]);
+            // }
 
         } catch (err) {
             console.error("Failed to assign interns:", err);
