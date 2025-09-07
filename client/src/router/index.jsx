@@ -30,6 +30,7 @@ import ManageLetters from '../pages/Dashboard/Letters/ManageLetters'
 import CreateNewLetter from '../pages/Dashboard/Letters/CreateNewLetter'
 import MyLetters from '../pages/Dashboard/Letters/MyLetters'
 import AssignIntern from '../pages/Dashboard/Project/AssignIntern'
+import InternProjects from '../pages/Dashboard/Project/InternProjects'
 
 function App() {
 
@@ -77,6 +78,7 @@ function App() {
                     <Route path='intern-profile' element={<PrivateRoute roles={['admin', 'intern']}><InternProfile /> </PrivateRoute>} />
                     <Route path='my-attendance' element={<PrivateRoute roles={['admin', 'intern']}><MyAttendance /> </PrivateRoute>} />
                     <Route path='my-letters' element={<PrivateRoute roles={['admin', 'intern']}><MyLetters /> </PrivateRoute>} />
+                    <Route path='my-projects' element={<PrivateRoute roles={['admin', 'intern']}><InternProjects /> </PrivateRoute>} />
 
                 </Route>
 
