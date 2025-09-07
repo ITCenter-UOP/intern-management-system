@@ -12,4 +12,8 @@ router.get('/get_all_projects', auth, checkPermission(['project:allprojects']), 
 
 router.get('/get-one-project/:id', auth, checkPermission(['project:getone']), ProjectController.get_one_project)
 
+router.post('/assign-interns/:id', auth, checkPermission(['project:assigninterns']), ProjectController.assignInternstoProject)
+
+router.post('/remove-interns/:id', auth, checkPermission(['project:removeinterns']))
+
 module.exports = router;

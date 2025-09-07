@@ -14,30 +14,32 @@ const AssignIntern = () => {
     const [users, setUsers] = useState([]);
     const [selectedInterns, setSelectedInterns] = useState([]);
     const [assigning, setAssigning] = useState(false);
+    const [removing, setRemoving] = useState(false);
 
     // Fetch project data
+    const fetchProjectData = async () => {
+        try {
+            const res = await API.get(
+                `/project/get-one-project/${id}?nocache=${Date.now()}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Cache-Control": "no-cache",
+                        Pragma: "no-cache",
+                        Expires: "0",
+                    },
+                }
+            );
+            setProjectData(res.data.result || null);
+        } catch (err) {
+            console.error("Failed to fetch project data:", err);
+            setError("Failed to load project data.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchProjectData = async () => {
-            try {
-                const res = await API.get(
-                    `/project/get-one-project/${id}?nocache=${Date.now()}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Cache-Control": "no-cache",
-                            Pragma: "no-cache",
-                            Expires: "0",
-                        },
-                    }
-                );
-                setProjectData(res.data.result || null);
-            } catch (err) {
-                console.error("Failed to fetch project data:", err);
-                setError("Failed to load project data.");
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchProjectData();
     }, [token, id]);
 
@@ -52,8 +54,6 @@ const AssignIntern = () => {
             } catch (err) {
                 console.error("Failed to fetch users:", err);
                 setUsers([]);
-            } finally {
-                setLoading(false);
             }
         };
         fetchUsers();
@@ -63,7 +63,7 @@ const AssignIntern = () => {
     const internUsers = users.filter(u => u.role && u.role.name === 'intern');
 
     // Already assigned interns (from project data)
-    const assignedInterns = projectdata?.assignedInterns || [];
+    const assignedInterns = projectdata?.pmembers || [];
 
     // Handle checkbox change
     const handleCheckboxChange = (internId) => {
@@ -74,27 +74,50 @@ const AssignIntern = () => {
         );
     };
 
-    // Assign interns to backend
+    // Assign interns
     const handleAssignInterns = async () => {
         if (selectedInterns.length === 0) return alert("Please select at least one intern!");
         setAssigning(true);
         try {
-            console.log(selectedInterns)
-            // const res = await API.post(`/project/assign-interns/${id}`,
-            //     { interns: selectedInterns },
-            //     { headers: { Authorization: `Bearer ${token}` } }
-            // );
+            const res = await API.post(
+                `/project/assign-interns/${id}`,
+                { interns: selectedInterns },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
 
-            // if (res.data.success === true) {
-            //     alert(res.data.message);
-            //     setSelectedInterns([]);
-            // }
-
+            if (res.data.success === true) {
+                alert(res.data.message);
+                setSelectedInterns([]);
+                setProjectData(res.data.project); // refresh data with updated project
+            }
         } catch (err) {
             console.error("Failed to assign interns:", err);
             alert("Failed to assign interns.");
         } finally {
             setAssigning(false);
+        }
+    };
+
+    // Remove intern
+    const handleRemoveIntern = async (internId) => {
+        if (!window.confirm("Are you sure you want to remove this intern?")) return;
+        setRemoving(true);
+        try {
+            const res = await API.post(
+                `/project/remove-interns/${id}`,
+                { interns: [internId] },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            if (res.data.success === true) {
+                alert(res.data.message);
+                setProjectData(res.data.project);
+            }
+        } catch (err) {
+            console.error("Failed to remove intern:", err);
+            alert("Failed to remove intern.");
+        } finally {
+            setRemoving(false);
         }
     };
 
@@ -109,7 +132,7 @@ const AssignIntern = () => {
                     <MdAssignmentInd className="fill-white w-6 h-6" />
                 </div>
                 <h1 className="ml-4 text-2xl font-bold text-blue-700">
-                    Assign Interns to Projects : {projectdata?.pname}
+                    Assign Interns to Project : {projectdata?.pname}
                 </h1>
             </div>
 
@@ -167,10 +190,24 @@ const AssignIntern = () => {
                 <div className="bg-white mt-4 p-6 shadow-lg rounded-lg">
                     <h1 className="text-xl font-semibold text-blue-700 mb-3">Assigned Interns</h1>
                     {assignedInterns.length > 0 ? (
-                        <ul className="list-disc list-inside">
+                        <ul className="space-y-3">
                             {assignedInterns.map((intern) => (
-                                <li key={intern._id} className="text-gray-800 font-medium">
-                                    {intern.username}
+                                <li
+                                    key={intern._id}
+                                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 shadow-sm"
+                                >
+                                    <div>
+                                        <p className="text-gray-900 font-semibold text-lg">{intern.username}</p>
+                                        <p className="text-gray-600 text-sm">📧 {intern.email}</p>
+                                        <p className="text-gray-600 text-sm"></p>
+                                    </div>
+                                    <button
+                                        onClick={() => handleRemoveIntern(intern._id)}
+                                        disabled={removing}
+                                        className="px-3 py-1 text-sm font-semibold text-red-600 hover:text-white hover:bg-red-600 border border-red-500 rounded-lg transition"
+                                    >
+                                        {removing ? "Removing..." : "Remove"}
+                                    </button>
                                 </li>
                             ))}
                         </ul>
@@ -211,7 +248,6 @@ const AssignIntern = () => {
                                 </div>
                             ))}
                         </div>
-
                     ) : (
                         <p className="text-gray-600">No interns available.</p>
                     )}

@@ -97,6 +97,64 @@ const ProjectController = {
             console.error("❌ Error in create_project:", err);
             res.status(500).json({ success: false, message: "Server error while creating project" });
         }
+    },
+
+    assignInternstoProject: async (req, res) => {
+        try {
+            const projectId = req.params.id;
+            const { interns } = req.body;
+
+            if (!Array.isArray(interns) || interns.length === 0) {
+                return res.status(400).json({ success: false, message: "Interns array is required" });
+            }
+
+            const updatedProject = await Project.findByIdAndUpdate(
+                projectId,
+                { $addToSet: { pmembers: { $each: interns } } },
+                { new: true }
+            ).populate("pmembers", "username email");
+
+            if (!updatedProject) {
+                return res.status(404).json({ success: false, message: "Project not found" });
+            }
+            res.json({
+                success: true,
+                message: "Interns assigned successfully",
+            });
+        } catch (err) {
+            console.error("❌ Error in assignInternstoProject:", err);
+            res.status(500).json({ success: false, message: "Server error while assigning interns" });
+        }
+    },
+
+    removeinterns: async (req, res) => {
+        try {
+            const projectId = req.params.id;
+            const { interns } = req.body;
+
+            if (!Array.isArray(interns) || interns.length === 0) {
+                return res.status(400).json({ success: false, message: "Interns array is required" });
+            }
+
+            const updatedProject = await Project.findByIdAndUpdate(
+                projectId,
+                { $pull: { pmembers: { $in: interns } } },
+                { new: true }
+            ).populate("pmembers", "username email");
+
+            if (!updatedProject) {
+                return res.status(404).json({ success: false, message: "Project not found" });
+            }
+
+            res.status(200).json({
+                success: true,
+                message: "Interns removed successfully",
+                project: updatedProject
+            });
+        } catch (err) {
+            console.error("❌ Error in removeinterns:", err);
+            res.status(500).json({ success: false, message: "Server error while removing interns" });
+        }
     }
 
 
