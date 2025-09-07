@@ -10,4 +10,6 @@ router.post('/create-project', auth, checkPermission(['project:create']), upload
 
 router.get('/get_all_projects', auth, checkPermission(['project:allprojects']), ProjectController.get_all_projects)
 
+router.get('/get-one-project/:id', auth, checkPermission(['project:getone']), ProjectController.get_one_project)
+
 module.exports = router;

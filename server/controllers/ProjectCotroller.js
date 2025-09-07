@@ -73,11 +73,25 @@ const ProjectController = {
     },
 
 
-    get_all_projects: async(req, res) => {
-        try{
+    get_all_projects: async (req, res) => {
+        try {
             const getprojects = await Project.find().populate('pmembers').populate('psupervisor')
 
-            return res.json({ success: true, result: getprojects})
+            return res.json({ success: true, result: getprojects })
+        }
+        catch (err) {
+            console.error("❌ Error in create_project:", err);
+            res.status(500).json({ success: false, message: "Server error while creating project" });
+        }
+    },
+
+    get_one_project: async (req, res) => {
+        try {
+            const project_id = req.params.id
+
+            const getproject = await Project.findById(project_id).populate('pmembers').populate('psupervisor')
+
+            return res.json({ success: true, result: getproject })
         }
         catch (err) {
             console.error("❌ Error in create_project:", err);
