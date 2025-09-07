@@ -87,8 +87,7 @@ const AssignIntern = () => {
 
             if (res.data.success === true) {
                 alert(res.data.message);
-                setSelectedInterns([]);
-                setProjectData(res.data.project); // refresh data with updated project
+                window.location.reload()
             }
         } catch (err) {
             console.error("Failed to assign interns:", err);
@@ -111,7 +110,7 @@ const AssignIntern = () => {
 
             if (res.data.success === true) {
                 alert(res.data.message);
-                setProjectData(res.data.project);
+                window.location.reload()
             }
         } catch (err) {
             console.error("Failed to remove intern:", err);
