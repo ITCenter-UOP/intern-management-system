@@ -3,10 +3,12 @@ import { MdAssignmentInd } from "react-icons/md";
 import { Link, useParams } from 'react-router-dom';
 import DefaultButton from '../../../component/Buttons/DefaultButton';
 import API from '../../../services/api';
+import { useAuth } from '../../../context/AuthContext';
 
 const AssignIntern = () => {
     const { id } = useParams();
     const token = localStorage.getItem("token");
+    const { auth } = useAuth()
 
     const [projectdata, setProjectData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -200,13 +202,21 @@ const AssignIntern = () => {
                                         <p className="text-gray-600 text-sm">📧 {intern.email}</p>
                                         <p className="text-gray-600 text-sm"></p>
                                     </div>
-                                    <button
-                                        onClick={() => handleRemoveIntern(intern._id)}
-                                        disabled={removing}
-                                        className="px-3 py-1 text-sm font-semibold text-red-600 hover:text-white hover:bg-red-600 border border-red-500 rounded-lg transition"
-                                    >
-                                        {removing ? "Removing..." : "Remove"}
-                                    </button>
+                                    {
+                                        (auth.role === 'admin') ?
+                                            <div className="">
+                                                <button
+                                                    onClick={() => handleRemoveIntern(intern._id)}
+                                                    disabled={removing}
+                                                    className="px-3 py-1 text-sm font-semibold text-red-600 hover:text-white hover:bg-red-600 border border-red-500 rounded-lg transition"
+                                                >
+                                                    {removing ? "Removing..." : "Remove"}
+                                                </button>
+                                            </div>
+                                            :
+                                            <div className=""></div>
+                                    }
+
                                 </li>
                             ))}
                         </ul>
@@ -216,50 +226,60 @@ const AssignIntern = () => {
                 </div>
 
                 {/* Assign New Interns */}
-                <div className="bg-white mt-4 p-6 shadow-lg rounded-lg">
-                    <h1 className="text-xl font-semibold text-blue-700 mb-3">Assign New Interns</h1>
-                    {internUsers.length > 0 ? (
-                        <div className="space-y-4">
-                            {internUsers.map((intern) => (
-                                <div
-                                    key={intern._id}
-                                    className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200"
-                                >
-                                    {/* Checkbox + Intern Info */}
-                                    <div className="flex items-start space-x-4">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedInterns.includes(intern._id)}
-                                            onChange={() => handleCheckboxChange(intern._id)}
-                                            className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-300"
-                                        />
-                                        <div>
-                                            <p className="text-gray-900 font-semibold text-lg">{intern.username}</p>
-                                            <p className="text-gray-600 text-sm">📧 {intern.email}</p>
-                                            <p className="text-gray-600 text-sm">🎓 Role: {intern.role?.name}</p>
-                                        </div>
+
+                {
+                    (auth.role === "admin") ?
+                        <div className="">
+                            <div className="bg-white mt-4 p-6 shadow-lg rounded-lg">
+                                <h1 className="text-xl font-semibold text-blue-700 mb-3">Assign New Interns</h1>
+                                {internUsers.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {internUsers.map((intern) => (
+                                            <div
+                                                key={intern._id}
+                                                className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200"
+                                            >
+                                                {/* Checkbox + Intern Info */}
+                                                <div className="flex items-start space-x-4">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedInterns.includes(intern._id)}
+                                                        onChange={() => handleCheckboxChange(intern._id)}
+                                                        className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-300"
+                                                    />
+                                                    <div>
+                                                        <p className="text-gray-900 font-semibold text-lg">{intern.username}</p>
+                                                        <p className="text-gray-600 text-sm">📧 {intern.email}</p>
+                                                        <p className="text-gray-600 text-sm">🎓 Role: {intern.role?.name}</p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Optional Badge */}
+                                                <span className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                                                    Intern
+                                                </span>
+                                            </div>
+                                        ))}
                                     </div>
+                                ) : (
+                                    <p className="text-gray-600">No interns available.</p>
+                                )}
 
-                                    {/* Optional Badge */}
-                                    <span className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
-                                        Intern
-                                    </span>
+                                <div className="mt-4">
+                                    <DefaultButton
+                                        type="button"
+                                        label={assigning ? "Assigning..." : "Assign Selected Interns"}
+                                        onClick={handleAssignInterns}
+                                        disabled={assigning}
+                                    />
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                    ) : (
-                        <p className="text-gray-600">No interns available.</p>
-                    )}
+                        :
+                        <div className=""></div>
+                }
 
-                    <div className="mt-4">
-                        <DefaultButton
-                            type="button"
-                            label={assigning ? "Assigning..." : "Assign Selected Interns"}
-                            onClick={handleAssignInterns}
-                            disabled={assigning}
-                        />
-                    </div>
-                </div>
+
             </div>
         </div>
     );

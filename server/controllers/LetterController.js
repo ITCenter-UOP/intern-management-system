@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const LetterController = {
     create_internship_start_letter: async (req, res) => {
         try {
-            const { intern, startat, enddate, supervisor, letter_type } = req.body;
+            const { intern, internname, startat, enddate, supervisor, letter_type } = req.body;
 
             // Intern check
             const userExists = await User.findById(intern);
@@ -24,7 +24,7 @@ const LetterController = {
             // ✅ Generate PDF (just saves to file, doesn’t send res)
             const filePath = await createInternShipStartLetter({
                 date: new Date().toLocaleDateString(),
-                name: userExists.username,
+                name: internname,
                 startdate: startat,
                 enddate,
                 superviosrname: superviosr_get.username

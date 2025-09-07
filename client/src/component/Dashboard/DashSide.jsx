@@ -91,12 +91,12 @@ const DashSide = () => {
                 { name: 'System Users', link: '/Dashboard/system-users', icon: <MdGroup /> }
             ]
         },
-        (auth.role === 'admin' || auth.role === 'staff' || auth.role === 'supervisor') && {
+        (auth.role === 'admin' || auth.role === 'supervisor') && {
             link: '/Dashboard/projects',
             name: 'Projects',
             icon: <FaDiagramProject />,
         },
-        (auth.role === 'admin' || auth.role === 'staff' || auth.role === 'supervisor') && {
+        (auth.role === 'admin' || auth.role === 'supervisor') && {
             link: '/Dashboard/letters',
             name: 'Letters',
             icon: <MdOutlineMail />,

@@ -6,6 +6,7 @@ import useForm from '../../../hooks/useForm';
 import Dropdown from '../../../component/Form/Dropdown';
 import DateInput from '../../../component/Form/DateInput';
 import API from '../../../services/api';
+import DefaultInput from '../../../component/Form/DefaultInput';
 
 const CreateNewLetter = () => {
     const token = localStorage.getItem('token');
@@ -14,6 +15,7 @@ const CreateNewLetter = () => {
 
     const { values, handleChange } = useForm({
         intern: '',
+        internname: '',
         startat: '',
         enddate: '',
         supervisor: '',
@@ -87,6 +89,15 @@ const CreateNewLetter = () => {
             </div>
 
             <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+                <DefaultInput
+                    label={"Enter Intern Name"}
+                    value={values.internname}
+                    name="internname"
+                    onChange={handleChange}
+                    required
+                    placeholder={"Enter Intern Name"}
+
+                />
                 <Dropdown
                     label="Select Intern"
                     name="intern"
