@@ -288,7 +288,7 @@ const ProjectController = {
             const user = await User.findOne({ email: decoded.email }).select("-password");
             if (!user) return res.status(404).json({ message: "User not found" });
 
-            const myworks = await InternWorks.findOne({ userID: user._id})
+            const myworks = await InternWorks.findOne({ userID: user._id}).populate('userID', '-password').populate('projectID')
 
             return res.json({ result: myworks })
         }

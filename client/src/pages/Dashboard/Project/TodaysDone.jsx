@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FaDiagramProject } from 'react-icons/fa6'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import DefaultButton from '../../../component/Buttons/DefaultButton'
@@ -14,7 +14,48 @@ const TodaysDone = () => {
     })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [todayWork, setTodayWork] = useState(null)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const fetchMyWork = async () => {
+            try {
+                const res = await API.get(
+                    `/project/my-works-done?nocache=${Date.now()}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Cache-Control": "no-cache",
+                            Pragma: "no-cache",
+                            Expires: "0",
+                        },
+                    }
+                )
+
+                const result = res.data.result
+
+                if (result) {
+                    // Only consider works for today
+                    const todayStr = new Date().toISOString().split("T")[0]
+                    const workDateStr = new Date(result.createdAt).toISOString().split("T")[0]
+
+                    // Check project ID and date
+                    if ((result.projectID?._id === id || result.projectID === id) && workDateStr === todayStr) {
+                        setTodayWork(result)
+                        values.work = result.works // prefill form
+                    } else {
+                        setTodayWork(null)
+                        values.work = ''
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch work:", err)
+                setError("Could not load today's work")
+            }
+        }
+
+        fetchMyWork()
+    }, [token, id])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -65,6 +106,16 @@ const TodaysDone = () => {
                 </Link>
             </div>
 
+            {todayWork && (
+                <div className="mt-4 bg-green-50 rounded-lg shadow p-4 border border-green-200">
+                    <h2 className="font-semibold text-green-800 mb-2">Your Work Today:</h2>
+                    <p className="text-gray-700 mb-1">
+                        <span className="font-medium">Project:</span> {todayWork.projectID?.pname}
+                    </p>
+                    <p className="text-gray-700">{todayWork.works}</p>
+                </div>
+            )}
+
             <div className="mt-4 bg-white rounded-lg shadow-lg p-6">
                 <form onSubmit={handleSubmit} method="post">
                     <TextAreaInput
@@ -85,7 +136,7 @@ const TodaysDone = () => {
 
                     <DefaultButton
                         type="submit"
-                        label={loading ? 'Saving...' : 'Save Work'}
+                        label={loading ? 'Saving...' : todayWork ? 'Update Work' : 'Save Work'}
                         disabled={loading}
                     />
                 </form>
