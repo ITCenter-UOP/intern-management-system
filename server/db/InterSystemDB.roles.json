@@ -1,0 +1,102 @@
+[{
+  "_id": {
+    "$oid": "6837b60b735077d2866f126b"
+  },
+  "name": "admin",
+  "permissions": [
+    "role:manage",
+    "role:create",
+    "role:update",
+    "systemusers:manage",
+    "systemusers:create",
+    "systemusers:update",
+    "permission:manage",
+    "permission:create",
+    "permission:update",
+    "permission:delete",
+    "role:getone",
+    "role:delete",
+    "user:updatestatus",
+    "useractivity:manage",
+    "useractivity:oneget",
+    "interndata:get",
+    "interninfor:update",
+    "internshipletter:create",
+    "internshipletter:getall",
+    "internshipletter:getmyletters",
+    "project:create",
+    "project:allprojects",
+    "project:getone",
+    "project:assigninterns",
+    "project:removeinterns",
+    "project:getinternprojects"
+  ],
+  "createdAt": {
+    "$date": "2025-05-29T01:19:07.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-07T11:26:44.463Z"
+  },
+  "__v": 45
+},
+{
+  "_id": {
+    "$oid": "6837b616735077d2866f126e"
+  },
+  "name": "supervisor",
+  "permissions": [
+    "internshipletter:getall",
+    "project:create",
+    "project:allprojects",
+    "project:getone",
+    "project:assigninterns",
+    "project:removeinterns",
+    "project:getinternprojects"
+  ],
+  "createdAt": {
+    "$date": "2025-05-29T01:19:18.585Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-07T11:26:47.971Z"
+  },
+  "__v": 38
+},
+{
+  "_id": {
+    "$oid": "6843973fea08c312b1a7d4cb"
+  },
+  "name": "staff",
+  "permissions": [
+    "internshipletter:getall",
+    "project:allprojects",
+    "project:getone",
+    "useractivity:manage",
+    "useractivity:oneget"
+  ],
+  "createdAt": {
+    "$date": "2025-06-07T01:34:55.181Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-07T12:15:28.902Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "68439748ea08c312b1a7d4d6"
+  },
+  "name": "intern",
+  "permissions": [
+    "interninfor:update",
+    "internshipletter:getmyletters",
+    "project:getone",
+    "project:getinternprojects"
+  ],
+  "createdAt": {
+    "$date": "2025-06-07T01:35:04.435Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-07T11:26:52.506Z"
+  },
+  "__v": 12
+}]
