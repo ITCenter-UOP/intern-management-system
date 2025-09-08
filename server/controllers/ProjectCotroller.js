@@ -188,6 +188,40 @@ const ProjectController = {
             console.error("❌ Error in get_my_projects:", err);
             res.status(500).json({ success: false, message: "Server error while fetching projects" });
         }
+    },
+
+    todays_work: async (req, res) => {
+        try {
+                        const token = req.header("Authorization")?.replace("Bearer ", "");
+            if (!token) return res.status(401).json({ message: "Access denied. No token provided." });
+
+            let decoded;
+            try {
+                decoded = jwt.verify(token, process.env.JWT_SECRET);
+            } catch (err) {
+                if (err.name === "TokenExpiredError") {
+                    return res.status(401).json({ message: "Token expired. Please log in again." });
+                }
+                return res.status(400).json({ message: "Invalid token." });
+            }
+
+            const user = await User.findOne({ email: decoded.email }).select("-password");
+            if (!user) return res.status(404).json({ message: "User not found" });
+
+
+            const projectid = req.params.id
+
+            const {
+                work
+            } = req.body
+
+            
+
+        }
+        catch (err) {
+            console.error("❌ Error in get_my_projects:", err);
+            res.status(500).json({ success: false, message: "Server error while fetching projects" });
+        }
     }
 
 };
