@@ -18,6 +18,8 @@ router.post('/remove-interns/:id', auth, checkPermission(['project:removeinterns
 
 router.get('/intern-projects', auth, checkPermission(['project:getinternprojects']), ProjectController.get_my_projects)
 
-// router.post('/add-today-works/:id', auth, checkPermission(['project:todaysdone']))
+router.post('/add-today-works/:id', auth, checkPermission(['project:todaysdone']), ProjectController.todays_work)
+
+router.get('/my-works-done', auth, checkPermission(['project:mywokrs']), ProjectController.get_my_works)
 
 module.exports = router;

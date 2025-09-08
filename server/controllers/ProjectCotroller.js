@@ -1,7 +1,8 @@
 const logUserAction = require("secure-mern/utils/logUserAction");
 const Project = require("../models/Project");
 const User = require("../node_modules/secure-mern/models/User")
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const InternWorks = require("../models/InternsWorks");
 
 const ProjectController = {
     create_project: async (req, res) => {
@@ -44,7 +45,7 @@ const ProjectController = {
                 psupervisor,
                 pstartdate,
                 estimatedEndDate,
-                projectFile: req.file ? req.file.path : null   // ✅ store uploaded file path
+                projectFile: req.file ? req.file.path : null
             });
 
             const resultnewproject = await newproject.save();
@@ -192,7 +193,86 @@ const ProjectController = {
 
     todays_work: async (req, res) => {
         try {
-                        const token = req.header("Authorization")?.replace("Bearer ", "");
+            const token = req.header("Authorization")?.replace("Bearer ", "");
+            if (!token) {
+                return res.status(401).json({ success: false, message: "Access denied. No token provided." });
+            }
+
+            let decoded;
+            try {
+                decoded = jwt.verify(token, process.env.JWT_SECRET);
+            } catch (err) {
+                if (err.name === "TokenExpiredError") {
+                    return res.status(401).json({ success: false, message: "Token expired. Please log in again." });
+                }
+                return res.status(400).json({ success: false, message: "Invalid token." });
+            }
+
+            // find logged in user
+            const user = await User.findOne({ email: decoded.email }).select("-password");
+            if (!user) {
+                return res.status(404).json({ success: false, message: "User not found" });
+            }
+
+            const projectID = req.params.id;
+            const { work } = req.body;
+
+            if (!work || work.trim() === "") {
+                return res.status(400).json({ success: false, message: "Work description is required." });
+            }
+
+            // optionally validate project exists
+            const projectExists = await Project.findById(projectID);
+            if (!projectExists) {
+                return res.status(404).json({ success: false, message: "Project not found." });
+            }
+
+            // check if today's work already exists
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+
+            let existingWork = await InternWorks.findOne({
+                userID: user._id,
+                projectID: projectID,
+                createdAt: { $gte: startOfDay, $lte: endOfDay }
+            });
+
+            if (existingWork) {
+                existingWork.works = work;
+                await existingWork.save();
+
+                return res.status(200).json({
+                    success: true,
+                    message: "Today's work updated successfully!",
+                });
+            }
+
+            // create new work entry
+            const newWork = new InternWorks({
+                userID: user._id,
+                projectID: projectID,
+                works: work
+            });
+
+            await newWork.save();
+
+            res.status(201).json({
+                success: true,
+                message: "Today's work saved successfully!",
+            });
+
+        } catch (err) {
+            console.error("❌ Error in todays_work:", err);
+            res.status(500).json({ success: false, message: "Server error while saving today's work" });
+        }
+    },
+
+    get_my_works: async (req, res) => {
+        try {
+            const token = req.header("Authorization")?.replace("Bearer ", "");
             if (!token) return res.status(401).json({ message: "Access denied. No token provided." });
 
             let decoded;
@@ -208,21 +288,16 @@ const ProjectController = {
             const user = await User.findOne({ email: decoded.email }).select("-password");
             if (!user) return res.status(404).json({ message: "User not found" });
 
+            const myworks = await InternWorks.findOne({ userID: user._id})
 
-            const projectid = req.params.id
-
-            const {
-                work
-            } = req.body
-
-            
-
+            return res.json({ result: myworks })
         }
         catch (err) {
-            console.error("❌ Error in get_my_projects:", err);
-            res.status(500).json({ success: false, message: "Server error while fetching projects" });
+            console.error("❌ Error :", err);
+            res.status(500).json({ success: false, message: "Server error while saving today's work" });
         }
     }
+
 
 };
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaDiagramProject } from 'react-icons/fa6'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import DefaultButton from '../../../component/Buttons/DefaultButton'
@@ -9,13 +9,17 @@ import API from '../../../services/api'
 const TodaysDone = () => {
     const { id } = useParams()
     const token = localStorage.getItem('token')
-    const { values, handleChange } = useForm({
-        work: '', 
+    const { values, handleChange, resetForm } = useForm({
+        work: '',
     })
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
+        setError(null)
         try {
             const res = await API.post(
                 `/project/add-today-works/${id}?nocache=${Date.now()}`,
@@ -31,12 +35,16 @@ const TodaysDone = () => {
             )
             if (res.data.success === true) {
                 alert(res.data.message)
+                resetForm()
                 navigate('/Dashboard/my-projects')
             } else {
-                alert(res.data.message)
+                setError(res.data.message || 'Something went wrong')
             }
         } catch (err) {
             console.log(err)
+            setError('Failed to save today’s work. Please try again.')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -69,9 +77,16 @@ const TodaysDone = () => {
                         required
                     />
 
+                    {error && (
+                        <p className="text-red-600 font-medium mb-3">
+                            {error}
+                        </p>
+                    )}
+
                     <DefaultButton
                         type="submit"
-                        label="Save Work"
+                        label={loading ? 'Saving...' : 'Save Work'}
+                        disabled={loading}
                     />
                 </form>
             </div>
